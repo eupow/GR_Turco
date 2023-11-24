@@ -1,0 +1,40 @@
+# Importar a biblioteca GPT-3
+import gpt_3
+
+# Criar uma instância da classe ChatBot
+bot = gpt_3.ChatBot()
+
+# Definir uma função para processar as mensagens do usuário
+def process_message(message):
+    # Verificar se a mensagem é válida
+    if message is None or message == "":
+        return "Por favor, digite algo."
+    # Verificar se a mensagem é uma saudação
+    elif message.lower() in ["oi", "olá", "ola", "e aí", "eaí"]:
+        return "Olá, eu sou um chatbot criado com o GPT-3. Qual é o seu nome?"
+    # Verificar se a mensagem é um nome
+    elif message.lower().startswith("meu nome é") or message.lower().startswith("eu me chamo"):
+        # Extrair o nome do usuário
+        name = message.split()[-1].capitalize()
+        # Armazenar o nome do usuário na memória do bot
+        bot.memory["name"] = name
+        return f"Prazer em conhecê-lo, {name}. O que você gostaria de conversar comigo?"
+    # Verificar se a mensagem é uma pergunta
+    elif message.endswith("?"):
+        # Gerar uma resposta usando o GPT-3
+        response = bot.ask_gpt(message)
+        return response
+    # Caso contrário, assumir que a mensagem é uma afirmação
+    else:
+        # Gerar uma resposta usando o GPT-3
+        response = bot.tell_gpt(message)
+        return response
+
+# Iniciar um loop para interagir com o usuário
+while True:
+    # Receber a mensagem do usuário
+    user_message = input("Você: ")
+    # Processar a mensagem do usuário
+    bot_message = process_message(user_message)
+    # Mostrar a mensagem do bot
+    print(f"Bot: {bot_message}")
